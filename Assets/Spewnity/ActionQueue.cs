@@ -70,7 +70,7 @@ namespace Spewnity
 				return go;
 			}
 
-			if(selectedGameObject == null) Debug.Log("Action requires a GameObject, but none was supplied or selected");
+			if(selectedGameObject == null) throw new UnityException("Action requires a GameObject, but none was supplied or selected");
 			
 			return selectedGameObject;			
 		}
@@ -149,6 +149,13 @@ namespace Spewnity
 				GameObject.Destroy(Qualify(go));
 				selectedGameObject = null;
 			});
+			return this;
+		}
+
+		// Sets the selected game object's parent
+		public ActionQueue SetParent(GameObject parent)
+		{
+			Add(() => Qualify(null).transform.parent = parent.transform);
 			return this;
 		}
 

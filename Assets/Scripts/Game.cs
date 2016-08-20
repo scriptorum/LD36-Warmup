@@ -4,14 +4,18 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Game : MonoBehaviour {
+	private static int MAX_DEAD_SPIDERS = 3;
+	private static float SCORE_SECONDS = 1.0f;
+	private static int SCORE_MULTIPLIER = 1;
+
 	public Text scoreUI;
-	public int MAX_DEAD_SPIDERS = 3;
 	public AnimationCurve spiderSpeed = new AnimationCurve(new Keyframe[] { new Keyframe(0, 0.2f), new Keyframe(1, 3.5f) });
 	public bool gameOver = true;
 
-
 	private int score = 0;
 	private int deadSpiders = 0;
+	private int liveSpiders = 0;
+	private float timeAccrued;
 
 	void Start()
 	{
@@ -20,8 +24,8 @@ public class Game : MonoBehaviour {
 
 	public void startGame()
 	{
-		deadSpiders = 0;
-		updateScore(0);
+		liveSpiders = deadSpiders = score = 0;
+		updateScoreBox();
 		gameOver = false;
 	}
 
@@ -29,16 +33,16 @@ public class Game : MonoBehaviour {
 	{
 		if(gameOver)
 			return;
-		
-		updateScore(score + 1);
+
+		liveSpiders++;
 	}
 
 	public void removeSpider()
 	{
 		if(gameOver)
 			return;
-		
-		updateScore(score - 1);
+
+		--liveSpiders;
 		if(++deadSpiders > MAX_DEAD_SPIDERS)
 		{
 			Debug.Log("Too many dead spiders! Game over!");
@@ -46,9 +50,22 @@ public class Game : MonoBehaviour {
 		}
 	}
 
-	public void updateScore(int amount)
+	void Update()
 	{
-		score = amount;
-		scoreUI.text = amount.ToString();
+		if(gameOver)
+			return;
+
+		timeAccrued += Time.deltaTime;
+		if(timeAccrued > SCORE_SECONDS)
+		{
+			score += liveSpiders * SCORE_MULTIPLIER;
+			updateScoreBox();
+			timeAccrued -= SCORE_SECONDS;
+		}
+	}
+
+	public void updateScoreBox()
+	{
+		scoreUI.text = score.ToString();
 	}
 }
