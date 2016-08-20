@@ -60,12 +60,13 @@ public class CheckInput : MonoBehaviour
 	{
 		isDragging = false;
 		Cursor.visible = true;
-		GameObject spider = arrow.hide(killSpider);
+		GameObject go = arrow.hide(killSpider);
 
-		if(spider != null)
+		if(go != null)
 		{
-			// TODO Get arrow length
-			// TODO Tell spider to fling ...
+			// Fling spider
+			Spider spider = go.GetComponent<Spider>();
+			 spider.fling(arrow.lineLength);
 		}
 	}
 }

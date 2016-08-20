@@ -7,6 +7,8 @@ public class Arrow : MonoBehaviour
 	public float dotLength = 0.5f;
 	public GameObject spiderPrefab;
 	public GameObject dotPrefab;
+
+	public float lineLength;
 	private SpriteRenderer sr;
 	private Vector2 startPoint;
 	private GameObject heldSpider;
@@ -57,7 +59,8 @@ public class Arrow : MonoBehaviour
 
 		// Determine optimal number of smaller dots
 		Vector2 vec = ((Vector2) heldSpider.transform.position) - pt;
-		int numDots = Mathf.Max(0, (int) Mathf.Floor(vec.magnitude / dotLength) - 1);
+		lineLength = vec.magnitude;
+		int numDots = Mathf.Max(0, (int) Mathf.Floor(lineLength / dotLength) - 1);
 		Vector2 dotOffset = vec / numDots;
 
 		// Ensure correct number of dots exist
