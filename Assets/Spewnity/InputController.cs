@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿// TODO Support for simulation of touch events from mouse input
+
+using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
