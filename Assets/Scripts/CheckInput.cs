@@ -7,7 +7,6 @@ public class CheckInput : MonoBehaviour
 	public Arrow arrow;
 
 	private bool isDragging = false;
-	private float outerPenRadius;
 	private float penRadius;
 
 	void Awake()
@@ -15,7 +14,6 @@ public class CheckInput : MonoBehaviour
 //		arrow = GameObject.Find("/Arrow").GetComponent<Arrow>();
 
 		penRadius = GameObject.Find("Pen").GetComponent<CircleCollider2D>().radius;
-		outerPenRadius = GameObject.Find("Outer Pen").GetComponent<CircleCollider2D>().radius;
 	}
 
 	void Update()
@@ -23,8 +21,15 @@ public class CheckInput : MonoBehaviour
 		Vector2 mousePt = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		float radius = Vector2.Distance(transform.position, mousePt);
 		bool mouseHeld = Input.GetMouseButton(0);
+		bool rmbCheck = Input.GetMouseButtonDown(1);
 
-		// In inner pen
+		if(rmbCheck)
+		{
+			stopDrag();
+			return;
+		}
+
+		// In pen
 		if(radius < penRadius)
 		{
 			if(isDragging)
@@ -34,19 +39,15 @@ public class CheckInput : MonoBehaviour
 			}
 		}
 
-		// In outer pen
-		else if(radius < outerPenRadius)
+		// Beyond pen
+		else
 		{
 			if(isDragging)
 			{
 				if(mouseHeld) arrow.redraw(mousePt);
-				else stopDrag();
 			}
 			else if(mouseHeld) startDrag(mousePt);
 		}
-
-		// Outside both
-		else if(isDragging) stopDrag();
 	}
 
 	private void startDrag(Vector2 pt)
