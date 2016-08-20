@@ -111,12 +111,17 @@ namespace Spewnity
 			return this;
 		}
 
-		public ActionQueue PlaySound(string soundName)
+		// Plays a sound and optionally waits for it to finish
+		public ActionQueue PlaySound(string soundName, bool waitForIt = false)
 		{
 			Add(() =>
 			{
-				Pause();
-				SoundManager.instance.Play(soundName, (snd) => Resume());
+				if(waitForIt) 
+				{
+					Pause();
+					SoundManager.instance.Play(soundName, (snd) => Resume());
+				}
+				else SoundManager.instance.Play(soundName);
 			});
 			return this;
 		}

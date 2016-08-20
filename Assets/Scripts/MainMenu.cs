@@ -58,6 +58,8 @@ public class MainMenu : MonoBehaviour
 		}
 
 		aq.Add(() => updateScore());
+		aq.Delay(0.35f);
+		aq.PlaySound("theme");
 		aq.Add(() => tts.enabled = true);
 		aq.Run();
 	}
