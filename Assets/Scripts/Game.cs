@@ -12,10 +12,18 @@ public class Game : MonoBehaviour {
 	public AnimationCurve spiderSpeed = new AnimationCurve(new Keyframe[] { new Keyframe(0, 0.2f), new Keyframe(1, 3.5f) });
 	public bool gameOver = true;
 
+	private Life[] lives = new Life[] { null, null, null };
 	private int score = 0;
 	private int deadSpiders = 0;
 	private int liveSpiders = 0;
 	private float timeAccrued;
+
+	void Awake()
+	{
+		int id = 0;
+		while(id < MAX_DEAD_SPIDERS)
+			lives[id] = GameObject.Find("/Lives/Life" + (++id)).GetComponent<Life>();
+	}
 
 	void Start()
 	{
@@ -29,7 +37,7 @@ public class Game : MonoBehaviour {
 		gameOver = false;
 	}
 
-	public void addSpider()
+	public void spiderBirthed()
 	{
 		if(gameOver)
 			return;
@@ -37,15 +45,15 @@ public class Game : MonoBehaviour {
 		liveSpiders++;
 	}
 
-	public void removeSpider()
+	public void spiderDied()
 	{
 		if(gameOver)
 			return;
 
-		--liveSpiders;
-		if(++deadSpiders > MAX_DEAD_SPIDERS)
+		liveSpiders--;
+		lives[deadSpiders++].show();
+		if(deadSpiders >= MAX_DEAD_SPIDERS)
 		{
-			Debug.Log("Too many dead spiders! Game over!");
 			gameOver = true;
 		}
 	}

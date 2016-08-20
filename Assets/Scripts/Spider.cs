@@ -43,7 +43,7 @@ public class Spider : MonoBehaviour
 		{
 //			readyToBoogie = true;
 			gameObject.layer = spiderLayer;
-			game.addSpider();
+			game.spiderBirthed();
 		}
 	}
 

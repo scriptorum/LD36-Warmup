@@ -152,6 +152,11 @@ namespace Spewnity
 			return child;
 		}
 
+		public static GameObject GetChild(this GameObject go, string name)
+		{
+			return go.transform.GetChild(name).gameObject;
+		}
+
 		public static T GetComponentOf<T>(string name)
 		{
 			GameObject go = GameObject.Find(name);

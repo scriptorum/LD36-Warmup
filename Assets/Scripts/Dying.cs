@@ -17,12 +17,12 @@ public class Dying : MonoBehaviour
 
 	void Start()
 	{
+		game.spiderDied();
 		aq = gameObject.AddComponent<ActionQueue>();
 		aq
 			.Add(() => StartCoroutine(sr.color.LerpColor(new Color(1f, 1f, 1f, 0f), 1.0f, (v) => sr.color = v)))
 			.Add(() => StartCoroutine(gameObject.transform.LerpScale(Vector3.zero, 1.0f)))
 			.Delay(1.0f)
-			.Add(() => game.removeSpider())
 			.Destroy(gameObject)
 			.Run();
 	}
