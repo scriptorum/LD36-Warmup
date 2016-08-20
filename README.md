@@ -34,12 +34,11 @@ Each living spider earns you points, so build up a big population and keep them 
 
 
 ### Sound Effects
- - [ ] Click
- - [ ] Game Over
- - [ ] Fling
- - [ ] Death pit
- - [ ] Spider aim (spider panic?)
+ - [X] Game Over
+ - [X] Death pit
  - [ ] Spiders collide
- - [ ] Spider crawl background noise scritchy
- - [ ] Main Menu Intro fade in
- - [ ] New High Score
+ - [X] Main Menu Intro drop
+ - [ ] Spider crawl background noise scritchy???
+ - [X] Click
+ - [X] Spider aim (spider panic?)
+ - [X] Fling

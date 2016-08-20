@@ -17,6 +17,7 @@ public class Dying : MonoBehaviour
 
 	void Start()
 	{
+		SoundManager.instance.Play("spiderDied");
 		game.spiderDied();
 		aq = gameObject.AddComponent<ActionQueue>();
 		aq

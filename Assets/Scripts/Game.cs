@@ -99,6 +99,8 @@ public class Game : MonoBehaviour
 		foreach(char letter in msg)
 		{
 			aq.Add(() => gameOverText.text += msg[i++]);
+			if(letter != ' ')
+				aq.PlaySound("click");
 			aq.Delay(0.2f);
 		}
 		aq.Delay(2f);

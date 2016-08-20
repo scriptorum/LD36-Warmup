@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Spewnity;
 
 public class Spider : MonoBehaviour
 {
@@ -68,6 +69,15 @@ public class Spider : MonoBehaviour
 //			rb.AddRelativeForce(new Vector2(0f, WALK_FORCE * 100));
 		}
 	}
+
+// This gets out of control quickly
+//	void OnCollisionEnter2D(Collision2D c)
+//	{
+//		if(c.gameObject.layer == spiderLayer)
+//		{
+//			SoundManager.instance.Play("scritch");
+//		}
+//	}
 
 	public void fling(float force)
 	{

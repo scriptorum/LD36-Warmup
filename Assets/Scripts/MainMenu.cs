@@ -27,6 +27,10 @@ public class MainMenu : MonoBehaviour
 	void Start()
 	{
 		scoreText.text = "";
+		TransitionToScene tts = buttonGO.GetComponent<TransitionToScene>();
+		tts.enabled = false;
+		float dropTime = 0.65f;
+		Debug.Assert(dropTime < fadeTime);
 
 		if(Game.lastScore == 0)
 		{
@@ -47,12 +51,14 @@ public class MainMenu : MonoBehaviour
 					StartCoroutine(tf.LerpScale(new Vector3(1f, 1f, 1f), fadeTime));
 					StartCoroutine(sr.color.LerpColor(origColor, fadeTime, (v) => sr.color = v));
 				});
-				aq.Delay(fadeTime);
+				aq.Delay(dropTime);
+				aq.PlaySound("drop");
+				aq.Delay(fadeTime - dropTime);
 			}
 		}
 
 		aq.Add(() => updateScore());
-		aq.Add(() => buttonGO.GetComponent<TransitionToScene>().enabled = true);
+		aq.Add(() => tts.enabled = true);
 		aq.Run();
 	}
 

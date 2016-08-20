@@ -14,7 +14,7 @@ namespace Spewnity
 {
 	public class TransitionToScene : MonoBehaviour
 	{
-		public AudioSource clickSnd;
+		public string clickSoundName = "";
 		public string sceneName;
 		public KeyCode[] keys;
 		public LoadSceneMode mode = LoadSceneMode.Single;
@@ -39,8 +39,8 @@ namespace Spewnity
 
 		public void transition()
 		{
-			if(clickSnd)
-				clickSnd.Play();
+			if(clickSoundName != null && clickSoundName != "")
+				SoundManager.instance.Play(clickSoundName);
 
 			clickEvent.Invoke();
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Spewnity;
 
 public class CheckInput : MonoBehaviour
 {
@@ -22,8 +23,7 @@ public class CheckInput : MonoBehaviour
 	{
 		if(game.gameOver)
 		{
-			if(isDragging)
-				stopDrag();
+			if(isDragging) stopDrag();
 			return;
 		}
 
@@ -66,6 +66,7 @@ public class CheckInput : MonoBehaviour
 		isDragging = true;
 		Cursor.visible = false;
 		arrow.show(pt);
+		scritch();
 	}
 
 	private void stopDrag(bool killSpider = true)
@@ -78,7 +79,15 @@ public class CheckInput : MonoBehaviour
 		{
 			// Fling spider
 			Spider spider = go.GetComponent<Spider>();
-			 spider.fling(arrow.lineLength);
+			spider.fling(arrow.lineLength);
+			SoundManager.instance.Play("flick");
 		}
+	}
+
+	private void scritch()
+	{
+		if(!isDragging)
+			return;
+		SoundManager.instance.Play("scritch", (Sound s) => scritch());
 	}
 }
