@@ -8,16 +8,25 @@ public class CheckInput : MonoBehaviour
 
 	private bool isDragging = false;
 	private float penRadius;
+	private Game game;
 
 	void Awake()
 	{
 //		arrow = GameObject.Find("/Arrow").GetComponent<Arrow>();
 
 		penRadius = GameObject.Find("Pen").GetComponent<CircleCollider2D>().radius;
+		game = GameObject.Find("Game").GetComponent<Game>();
 	}
 
 	void Update()
 	{
+		if(game.gameOver)
+		{
+			if(isDragging)
+				stopDrag();
+			return;
+		}
+
 		Vector2 mousePt = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		float radius = Vector2.Distance(transform.position, mousePt);
 		bool mouseHeld = Input.GetMouseButton(0);
@@ -28,6 +37,7 @@ public class CheckInput : MonoBehaviour
 			stopDrag();
 			return;
 		}
+
 
 		// In pen
 		if(radius < penRadius)
@@ -45,6 +55,7 @@ public class CheckInput : MonoBehaviour
 			if(isDragging)
 			{
 				if(mouseHeld) arrow.redraw(mousePt);
+				else stopDrag();
 			}
 			else if(mouseHeld) startDrag(mousePt);
 		}

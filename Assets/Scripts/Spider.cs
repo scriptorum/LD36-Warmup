@@ -8,6 +8,7 @@ public class Spider : MonoBehaviour
 
 	private bool readyToBoogie = false;
 	private Rigidbody2D rb;
+	private Game game;
 	private int permeableLayer;
 	private int spiderLayer;
 	private int boundaryLayer;
@@ -18,13 +19,14 @@ public class Spider : MonoBehaviour
 
 	void Awake()
 	{
+		game = GameObject.Find("Game").GetComponent<Game>();
 		rb = gameObject.GetComponent<Rigidbody2D>();
 		spiderLayer = LayerMask.NameToLayer("Spiders");
 		permeableLayer = LayerMask.NameToLayer("Permeable");
 		boundaryLayer = LayerMask.NameToLayer("Boundary");
 		deathLayer = LayerMask.NameToLayer("Death");
 		dyingLayer = LayerMask.NameToLayer("Dying");
-		walkingSpeed = Random.Range(0.2f, 0.5f);
+		walkingSpeed = game.spiderSpeed.Evaluate(Random.value);
 	}
 
 	void FixedUpdate()
@@ -41,6 +43,7 @@ public class Spider : MonoBehaviour
 		{
 //			readyToBoogie = true;
 			gameObject.layer = spiderLayer;
+			game.addSpider();
 		}
 	}
 
