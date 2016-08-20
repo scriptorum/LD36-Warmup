@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Spewnity;
 
 public class MainMenu : MonoBehaviour
@@ -11,6 +12,8 @@ public class MainMenu : MonoBehaviour
 	private GameObject[] elements;
 	private ActionQueue aq;
 	private float fadeTime = 1.0f;
+
+	public Text scoreText;
 
 	void Awake()
 	{
@@ -23,28 +26,48 @@ public class MainMenu : MonoBehaviour
 
 	void Start()
 	{
-		aq.Delay(0.5f);
+		scoreText.text = "";
 
-		foreach(GameObject element in elements)
+		if(Game.lastScore == 0)
 		{
-			Transform tf = element.transform;
-			tf.localScale = new Vector3(4f, 4f, 1f);
-			SpriteRenderer sr = element.GetComponent<SpriteRenderer>();
-			Color origColor = sr.color;
-			Color tempColor = origColor;
-			tempColor.a = 0;
-			sr.color = tempColor;
+			aq.Delay(0.5f);
 
-			aq.Add(() => 
+			foreach(GameObject element in elements)
 			{
-				StartCoroutine(tf.LerpScale(new Vector3(1f, 1f, 1f), fadeTime));
-				StartCoroutine(sr.color.LerpColor(origColor, fadeTime, (v) => sr.color = v));
-			});
-			aq.Delay(fadeTime);
+				Transform tf = element.transform;
+				tf.localScale = new Vector3(4f, 4f, 1f);
+				SpriteRenderer sr = element.GetComponent<SpriteRenderer>();
+				Color origColor = sr.color;
+				Color tempColor = origColor;
+				tempColor.a = 0;
+				sr.color = tempColor;
+
+				aq.Add(() =>
+				{
+					StartCoroutine(tf.LerpScale(new Vector3(1f, 1f, 1f), fadeTime));
+					StartCoroutine(sr.color.LerpColor(origColor, fadeTime, (v) => sr.color = v));
+				});
+				aq.Delay(fadeTime);
+			}
 		}
 
+		aq.Add(() => updateScore());
 		aq.Add(() => buttonGO.GetComponent<TransitionToScene>().enabled = true);
 		aq.Run();
+	}
+
+	public void updateScore()
+	{
+		string msg = "";
+
+		if(Game.highScore > 0)
+		{
+			msg += "High Score:\n" + Game.highScore;
+			if(Game.lastScore > 0) msg += "\n\n";
+		}
+		if(Game.lastScore > 0) msg += "Last Score:\n" + Game.lastScore;
+
+		scoreText.text = msg;
 	}
 }
 

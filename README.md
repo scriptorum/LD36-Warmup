@@ -17,16 +17,18 @@ Each living spider earns you points, so build up a big population and keep them 
 8. Earn 1 point per spider per second
 
 ## Remaining chores
- - [ ] Game over screen
  - [ ] Sound effects
  - [ ] Music
  - [ ] Spider animations
- - [ ] Levels
  - [ ] Instructions
  - [ ] Easier flinging - add inner belt and project spider fling location
  - [ ] Better art
+ - [ ] Flying spider should keep flying while velocity high!
+ - [ ] Eliminate flying spiders not in pen after 1 second
+ - [ ] Levels
  - [ ] Add spiders crawling over main menu
  - [X] Main menu
+ - [X] Game over screen
 
 
 
