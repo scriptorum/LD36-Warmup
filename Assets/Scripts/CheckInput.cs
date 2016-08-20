@@ -30,11 +30,7 @@ public class CheckInput : MonoBehaviour
 			if(isDragging)
 			{
 				if(mouseHeld) arrow.redraw(mousePt);
-				else
-				{
-					Debug.Log("Fire!");
-					stopDrag();
-				}
+				else stopDrag(false);
 			}
 		}
 
@@ -44,28 +40,13 @@ public class CheckInput : MonoBehaviour
 			if(isDragging)
 			{
 				if(mouseHeld) arrow.redraw(mousePt);
-				else
-				{
-					Debug.Log("Outer pen, dragging, mouse released");
-					stopDrag();
-				}
+				else stopDrag();
 			}
-			else if(mouseHeld)
-			{
-				Debug.Log("Outer pen, not dragging, mouse down");
-				startDrag(mousePt);
-			}
+			else if(mouseHeld) startDrag(mousePt);
 		}
 
 		// Outside both
-		else
-		{
-			if(isDragging)
-			{
-				Debug.Log("Outside both and dragging");
-				stopDrag();
-			}
-		}
+		else if(isDragging) stopDrag();
 	}
 
 	private void startDrag(Vector2 pt)
@@ -75,10 +56,16 @@ public class CheckInput : MonoBehaviour
 		arrow.show(pt);
 	}
 
-	private void stopDrag()
+	private void stopDrag(bool killSpider = true)
 	{
 		isDragging = false;
 		Cursor.visible = true;
-		arrow.hide();
+		GameObject spider = arrow.hide(killSpider);
+
+		if(spider != null)
+		{
+			// TODO Get arrow length
+			// TODO Tell spider to fling ...
+		}
 	}
 }

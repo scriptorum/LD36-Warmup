@@ -12,7 +12,7 @@ public class Arrow : MonoBehaviour
 	void Awake()
 	{
 		sr = this.GetComponent<SpriteRenderer>();
-		hide();
+		hide(false);
 	}
 
 	public void show(Vector2 pt)
@@ -23,21 +23,22 @@ public class Arrow : MonoBehaviour
 		redraw(pt); // draw the line
 	}
 
-	public void hide()
+	public GameObject hide(bool killSpider)
 	{
-		Debug.Log("Spider gone");
 		sr.enabled = false;
-//		Destroy(heldSpider);
+		GameObject temp = heldSpider;
+		if(killSpider && heldSpider != null)
+			Destroy(heldSpider);
 		heldSpider = null;
+		return temp;
 	}
 
 	public void redraw(Vector2 pt)
 	{
+		if(heldSpider == null)
+			return;
+		
 		transform.position = new Vector3(pt.x, pt.y, transform.position.z);
-
-//		float spiderAngle = Mathf.Atan2(startPoint.y, startPoint.x) * Mathf.Rad2Deg;
-//		heldSpider.transform.LookAt(new Vector3(pt.x, pt.y, heldSpider.transform.position.z));
-
 		Vector2 diff = pt - (Vector2) heldSpider.transform.position;
 		diff.Normalize();
 		float rot = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
@@ -49,7 +50,5 @@ public class Arrow : MonoBehaviour
 	{
 		Vector3 pt = new Vector3(startPoint.x, startPoint.y, spiderPrefab.transform.position.z);
 		heldSpider = (GameObject) Instantiate(spiderPrefab, pt, Quaternion.identity);
-//		heldSpider.transform.LookAt(ctr);
-//		Debug.Log("Looking from " + pt + " to " + ctr + "! New rotation:" + heldSpider.transform.localRotation);
 	}
 }
