@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿//TODO Add StartCoroutine versions of the Lerps? I'll have to extend them off MonoBehaviour then.
+using UnityEngine;
 using System.Collections;
 
 namespace Spewnity

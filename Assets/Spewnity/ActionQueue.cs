@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Events;
+using System.Threading;
 using Action = System.Action;
 
 namespace Spewnity
@@ -24,7 +25,7 @@ namespace Spewnity
 			return this;
 		}
 
-		// Processes all actions in the queue, or until an action causes the queue to pause, 
+		// Processes all actions in the queue, or until an action causes the queue to pause,
 		// in which case the queue will resume itself when it's ready.
 		public void Run()
 		{
@@ -63,14 +64,13 @@ namespace Spewnity
 		// If the non-null, this may also "select" the game object.
 		private GameObject Qualify(GameObject go, bool alsoSelectIt = true)
 		{
-			if(go != null) 
+			if(go != null)
 			{
-				if(alsoSelectIt)
-					selectedGameObject = go;
+				if(alsoSelectIt) selectedGameObject = go;
 				return go;
 			}
 
-			if(selectedGameObject == null) Debug.Log("Action references a null GameObject but no game object has yet been selected");
+			if(selectedGameObject == null) Debug.Log("Action requires a GameObject, but none was supplied or selected");
 			
 			return selectedGameObject;			
 		}
@@ -94,6 +94,7 @@ namespace Spewnity
 			{
 				Pause();
 				Invoke("Resume", delaySec);
+
 			});
 			return this;
 		}
@@ -127,23 +128,33 @@ namespace Spewnity
 		}
 
 		// Instantiates a game object and selects it (see Select)
-		public ActionQueue Spawn(GameObject prefab = null)
+		public ActionQueue Instatiate(GameObject prefab = null)
 		{
-			Add(() => selectedGameObject = (GameObject) 
-				Instantiate(Qualify(prefab)));
+			Add(() => GameObject.Instantiate(Qualify(prefab, true)));
 			return this;
 		}
 
 		// Instantiates a game object at a certain position and selects it (see Select)
-		public ActionQueue SpawnAt(Vector3 position, GameObject prefab = null)
+		public ActionQueue Instantiate(Vector3 position, GameObject prefab = null)
 		{
-			Add(() => selectedGameObject = (GameObject) 
-				Instantiate(Qualify(prefab, false), (Vector3) position, Quaternion.identity));
+			Add(() => GameObject.Instantiate(Qualify(prefab, true), (Vector3) position, Quaternion.identity));
+			return this;
+		}
+
+		// Destroys the game object and also deselects it
+		public ActionQueue Destroy(GameObject go = null)
+		{
+			Add(() =>
+			{
+				GameObject.Destroy(Qualify(go));
+				selectedGameObject = null;
+			});
 			return this;
 		}
 
 		// Selects a game object. You can pass null for any these predefined actions
-		// and it will use the selected game object instead.
+		// and it will use the selected game object instead. Some actions will
+		// automatically select a game object.
 		public ActionQueue Select(GameObject go)
 		{
 			Add(() => selectedGameObject = go);
