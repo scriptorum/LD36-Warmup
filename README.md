@@ -27,8 +27,19 @@ Each living spider earns you points, so build up a big population and keep them 
  - [ ] Eliminate flying spiders not in pen after 1 second
  - [ ] Levels
  - [ ] Add spiders crawling over main menu
+ - [ ] Prepopulate levels with spiders
+ - [ ] Adjust speed of spiders to level/number of spiders out?
  - [X] Main menu
  - [X] Game over screen
 
 
-
+### Sound Effects
+ - [ ] Click
+ - [ ] Game Over
+ - [ ] Fling
+ - [ ] Death pit
+ - [ ] Spider aim (spider panic?)
+ - [ ] Spiders collide
+ - [ ] Spider crawl background noise scritchy
+ - [ ] Main Menu Intro fade in
+ - [ ] New High Score
