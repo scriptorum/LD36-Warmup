@@ -39,7 +39,7 @@ namespace Spewnity
 
 		public void transition()
 		{
-			if(clickSoundName != null && clickSoundName != "")
+			if(clickSoundName != null && clickSoundName != "" && SoundManager.instance != null)
 				SoundManager.instance.Play(clickSoundName);
 
 			clickEvent.Invoke();

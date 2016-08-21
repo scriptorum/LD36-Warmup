@@ -6,8 +6,6 @@ using Spewnity;
 public class Spider : MonoBehaviour
 {
 	private static float FLING_MULTIPLIER = 2.0f;
-
-	private bool readyToBoogie = false;
 	private Rigidbody2D rb;
 	private Game game;
 	private int permeableLayer;
@@ -16,6 +14,9 @@ public class Spider : MonoBehaviour
 	private int deathLayer;
 	private int dyingLayer;
 	private Animator anim;
+
+	private bool isWalking = false;
+	private bool isOutsidePen = true;
 
 	public float walkingSpeed;
 
@@ -39,7 +40,17 @@ public class Spider : MonoBehaviour
 
 	void FixedUpdate()
 	{
-		if(!readyToBoogie) return;
+		if(isOutsidePen)
+			return;
+
+		if(!isWalking)
+		{
+			if(rb.velocity.magnitude > walkingSpeed)
+				return;
+
+			isWalking = true;
+			anim.SetTrigger("walk");
+		}
 
 		rb.AddRelativeForce(new Vector2(0f, walkingSpeed));
 	}
@@ -49,16 +60,16 @@ public class Spider : MonoBehaviour
 	{
 		if(c.gameObject.layer == permeableLayer)
 		{
-//			readyToBoogie = true;
+			isOutsidePen = false;
 			gameObject.layer = spiderLayer;
 			game.spiderBirthed();
-			anim.SetTrigger("walk");
 		}
 	}
 
-	void OnTriggerEnter2D(Collider2D c)
+	// Collide with pit? Not if still "airborne"
+	void OnTriggerStay2D(Collider2D c)
 	{
-		if(c.gameObject.layer == deathLayer)
+		if(c.gameObject.layer == deathLayer && isWalking)
 		{
 			anim.SetTrigger("panic");
 			gameObject.layer = dyingLayer;
@@ -90,7 +101,6 @@ public class Spider : MonoBehaviour
 
 	public void fling(float force)
 	{
-		readyToBoogie = true;
 		rb.AddRelativeForce(new Vector2(0f, force * FLING_MULTIPLIER), ForceMode2D.Impulse);
 	}
 }

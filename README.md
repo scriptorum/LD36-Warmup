@@ -17,7 +17,6 @@ Each living spider earns you points, so build up a big population and keep them 
 8. Earn 1 point per spider per second
 
 ## Remaining chores
- - [ ] Flying spider should keep flying while velocity high!
  - [ ] Eliminate flying spiders not in pen after 1 second
  - [ ] Easier flinging - add inner belt and project spider fling location
  - [ ] FX
@@ -29,6 +28,7 @@ Each living spider earns you points, so build up a big population and keep them 
  - [ ] Prepopulate levels with spiders
  - [ ] Adjust speed of spiders to level/number of spiders out?
  - [ ] Fine tune sound effects
+ - [X] Flying spider should keep flying while velocity high!
  - [X] Instructions
  - [X] Spider panic anim
  - [X] Spider animations
