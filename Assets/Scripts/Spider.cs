@@ -15,6 +15,7 @@ public class Spider : MonoBehaviour
 	private int boundaryLayer;
 	private int deathLayer;
 	private int dyingLayer;
+	private Animator anim;
 
 	public float walkingSpeed;
 
@@ -28,6 +29,12 @@ public class Spider : MonoBehaviour
 		deathLayer = LayerMask.NameToLayer("Death");
 		dyingLayer = LayerMask.NameToLayer("Dying");
 		walkingSpeed = game.spiderSpeed.Evaluate(Random.value);
+		anim = gameObject.GetComponent<Animator>();
+	}
+
+	void Start()
+	{
+		anim.SetTrigger("panic");
 	}
 
 	void FixedUpdate()
@@ -45,6 +52,7 @@ public class Spider : MonoBehaviour
 //			readyToBoogie = true;
 			gameObject.layer = spiderLayer;
 			game.spiderBirthed();
+			anim.SetTrigger("walk");
 		}
 	}
 
@@ -52,6 +60,7 @@ public class Spider : MonoBehaviour
 	{
 		if(c.gameObject.layer == deathLayer)
 		{
+			anim.SetTrigger("panic");
 			gameObject.layer = dyingLayer;
 			gameObject.AddComponent<Dying>();
 			rb.velocity = rb.velocity.normalized;
