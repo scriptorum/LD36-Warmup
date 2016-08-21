@@ -6,36 +6,49 @@ using Spewnity;
 
 public class MainMenu : MonoBehaviour
 {
-	private GameObject buttonGO;
+	private static bool showLongIntro = true;
+	private GameObject playButtonGO;
+	private GameObject rulesButtonGO;
 	private GameObject titleGO;
 	private GameObject authorGO;
+	private GameObject playTextGO;
+	private GameObject rulesTextGO;
 	private GameObject[] elements;
 	private ActionQueue aq;
-	private float fadeTime = 1.0f;
+	private float fadeTime = 1.4f;
 
 	public Text scoreText;
 
 	void Awake()
 	{
-		buttonGO = GameObject.Find("/Menu Play Button");
+		playButtonGO = GameObject.Find("/Menu Play Button");
+		playTextGO = playButtonGO.GetChild("Label");
+		rulesButtonGO = GameObject.Find("/Menu Rules Button");
+		rulesTextGO = rulesButtonGO.GetChild("Label");
 		titleGO = GameObject.Find("/Menu Title");
 		authorGO = GameObject.Find("/Menu Author");
 		aq = gameObject.AddComponent<ActionQueue>();
-		elements = new GameObject[] { titleGO, authorGO, buttonGO };
+		elements = new GameObject[] {
+			titleGO,
+			authorGO,
+			playButtonGO,
+			playTextGO,
+			rulesButtonGO,
+			rulesTextGO
+		};
 	}
 
 	void Start()
 	{
 		scoreText.text = "";
-		TransitionToScene tts = buttonGO.GetComponent<TransitionToScene>();
+		TransitionToScene tts = playButtonGO.GetComponent<TransitionToScene>();
 		tts.clickEvent.AddListener(() => SoundManager.instance.Stop("theme"));
-		tts.enabled = false;
-		float dropTime = 0.65f;
-		Debug.Assert(dropTime < fadeTime);
 
-		if(Game.lastScore == 0)
+		if(showLongIntro)
 		{
+			showLongIntro = false;
 			aq.Delay(0.5f);
+			float d = fadeTime;
 
 			foreach(GameObject element in elements)
 			{
@@ -49,19 +62,20 @@ public class MainMenu : MonoBehaviour
 
 				aq.Add(() =>
 				{
-					StartCoroutine(tf.LerpScale(new Vector3(1f, 1f, 1f), fadeTime));
-					StartCoroutine(sr.color.LerpColor(origColor, fadeTime, (v) => sr.color = v));
+					StartCoroutine(tf.LerpScale(new Vector3(1f, 1f, 1f), d));
+					StartCoroutine(sr.color.LerpColor(origColor, d, (v) => sr.color = v));
 				});
-				aq.Delay(dropTime);
 				aq.PlaySound("drop");
-				aq.Delay(fadeTime - dropTime);
+				aq.Delay(d);
+
+				d *= 0.7f;
 			}
 		}
 
 		aq.Add(() => updateScore());
 		aq.Delay(0.35f);
-		aq.PlaySound("theme");
-		aq.Add(() => tts.enabled = true);
+		if(!SoundManager.instance.GetSource("theme").isPlaying)
+			aq.PlaySound("theme");
 		aq.Run();
 	}
 
