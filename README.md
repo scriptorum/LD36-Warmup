@@ -17,6 +17,8 @@ Each living spider earns you points, so build up a big population and keep them 
 8. Earn 1 point per spider per second
 
 ## Remaining chores
+Ah well, I've done enough and I'm tired. Anyhow it's just a warmup weekend. :)
+
  - [ ] Eliminate flying spiders not in pen after 1 second
  - [ ] Easier flinging - add inner belt and project spider fling location
  - [ ] FX
