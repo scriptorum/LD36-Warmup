@@ -28,6 +28,7 @@ public class MainMenu : MonoBehaviour
 	{
 		scoreText.text = "";
 		TransitionToScene tts = buttonGO.GetComponent<TransitionToScene>();
+		tts.clickEvent.AddListener(() => SoundManager.instance.Stop("theme"));
 		tts.enabled = false;
 		float dropTime = 0.65f;
 		Debug.Assert(dropTime < fadeTime);
