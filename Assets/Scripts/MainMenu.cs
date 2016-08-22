@@ -6,7 +6,6 @@ using Spewnity;
 
 public class MainMenu : MonoBehaviour
 {
-	private static bool showLongIntro = true;
 	private GameObject playButtonGO;
 	private GameObject rulesButtonGO;
 	private GameObject titleGO;
@@ -44,9 +43,10 @@ public class MainMenu : MonoBehaviour
 		TransitionToScene tts = playButtonGO.GetComponent<TransitionToScene>();
 		tts.clickEvent.AddListener(() => SoundManager.instance.Stop("theme"));
 
-		if(showLongIntro)
+		// Show long intro ONLY if this is the first scene loaded.
+		// Otherwise show the fast intro.
+		if(App.lastScene == null)
 		{
-			showLongIntro = false;
 			aq.Delay(0.5f);
 			float d = fadeTime;
 
