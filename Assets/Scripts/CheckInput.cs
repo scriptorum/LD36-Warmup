@@ -9,85 +9,86 @@ public class CheckInput : MonoBehaviour
 
 	private bool isDragging = false;
 	private float penRadius;
+	private Vector2 centerPos;
 	private Game game;
 
 	void Awake()
 	{
-//		arrow = GameObject.Find("/Arrow").GetComponent<Arrow>();
-
 		penRadius = GameObject.Find("Pen").GetComponent<CircleCollider2D>().radius;
+		centerPos = (Vector2) GameObject.Find("Pen").transform.position;
 		game = GameObject.Find("Game").GetComponent<Game>();
 	}
 
 	void Update()
 	{
-		if(game.gameOver)
+		bool rmb = Input.GetMouseButtonDown(1);
+		if(game.gameOver || rmb)
 		{
-			if(isDragging) stopDrag();
+			if(isDragging) unspawnSpider();
 			return;
 		}
 
 		Vector2 mousePt = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-		float radius = Vector2.Distance(transform.position, mousePt);
-		bool mouseHeld = Input.GetMouseButton(0);
-		bool rmbCheck = Input.GetMouseButtonDown(1);
 
-		if(rmbCheck)
+		if(Input.GetMouseButtonDown(0)) // Button pressed
 		{
-			stopDrag();
-			return;
+			spawnSpider(mousePt);
 		}
 
-
-		// In pen
-		if(radius < penRadius)
+		else if(Input.GetMouseButton(0)) // Button held
 		{
 			if(isDragging)
 			{
-				if(mouseHeld) arrow.redraw(mousePt);
-				else stopDrag(false);
+				if(rmb) unspawnSpider();
+				else arrow.redraw(mousePt);
 			}
 		}
 
-		// Beyond pen
-		else
-		{
-			if(isDragging)
-			{
-				if(mouseHeld) arrow.redraw(mousePt);
-				else stopDrag();
-			}
-			else if(mouseHeld) startDrag(mousePt);
-		}
+		else if(isDragging) flingSpider(); // Button released
 	}
 
-	private void startDrag(Vector2 pt)
+	private void startDragging()
 	{
 		isDragging = true;
 		Cursor.visible = false;
-		arrow.show(pt);
+	}
+
+	private void spawnSpider(Vector2 pt)
+	{
+		// Adjust spider position to edge of pen
+		Vector2 snapToBoundary = (pt - centerPos).normalized * penRadius + centerPos;
+
+		// And spawn a panicky spider
+		startDragging();
+		arrow.show(snapToBoundary);
 		scritch();
 	}
 
-	private void stopDrag(bool killSpider = true)
+	private void stopDragging()
 	{
 		isDragging = false;
 		Cursor.visible = true;
-		GameObject go = arrow.hide(killSpider);
+	}
 
-		if(go != null)
-		{
-			// Fling spider
-			Spider spider = go.GetComponent<Spider>();
-			spider.fling(arrow.lineLength);
-			SoundManager.instance.Play("flick");
-		}
+	private void unspawnSpider()
+	{
+		stopDragging();
+		arrow.hide(true);
+	}
+
+	private void flingSpider()
+	{
+		stopDragging();
+		GameObject go = arrow.hide(false);
+		Debug.Assert(go != null);
+		Spider spider = go.GetComponent<Spider>();
+		spider.fling(arrow.lineLength);
+		SoundManager.instance.Play("flick");
 	}
 
 	private void scritch()
 	{
-		if(!isDragging)
-			return;
+		if(!isDragging) return;
 		SoundManager.instance.Play("scritch", (Sound s) => scritch());
 	}
 }
