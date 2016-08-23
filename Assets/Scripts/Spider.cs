@@ -6,6 +6,7 @@ using Spewnity;
 public class Spider : MonoBehaviour
 {
 	private static float FLING_MULTIPLIER = 2.0f;
+
 	private Rigidbody2D rb;
 	private Game game;
 	private int permeableLayer;
@@ -14,15 +15,17 @@ public class Spider : MonoBehaviour
 	private int deathLayer;
 	private int dyingLayer;
 	private Animator anim;
-
+	private float penRadius;
 	private bool isWalking = false;
 	private bool isOutsidePen = true;
+	private bool isHeld = true;
+	private Vector2 centerPos;
 
 	public float walkingSpeed;
 
 	void Awake()
 	{
-		game = GameObject.Find("Game").GetComponent<Game>();
+		game = GameObject.Find("/Game").GetComponent<Game>();
 		rb = gameObject.GetComponent<Rigidbody2D>();
 		spiderLayer = LayerMask.NameToLayer("Spiders");
 		permeableLayer = LayerMask.NameToLayer("Permeable");
@@ -31,25 +34,55 @@ public class Spider : MonoBehaviour
 		dyingLayer = LayerMask.NameToLayer("Dying");
 		walkingSpeed = game.spiderSpeed.Evaluate(Random.value);
 		anim = gameObject.GetComponent<Animator>();
+		penRadius = GameObject.Find("Pen").GetComponent<CircleCollider2D>().radius;
+		centerPos = (Vector2) GameObject.Find("Pen").transform.position;
+
+	}
+
+	private bool isSpiderViable()
+	{
+		float spiderRadius = Vector2.Distance(centerPos, (Vector2) transform.position);
+		if(spiderRadius > penRadius)
+		{
+			killSpider();
+			return false;
+		}
+		return true;
+	}
+
+	private void killSpider()
+	{
+		Destroy(gameObject);
 	}
 
 	void Start()
 	{
 		anim.SetTrigger("panic");
+		anim.speed = 1.0f;
 	}
 
 	void FixedUpdate()
 	{
 		if(isOutsidePen)
+		{
+			if(!isHeld && rb.velocity.magnitude <= 0.0001f)
+				killSpider();
 			return;
+		}
 
 		if(!isWalking)
 		{
-			if(rb.velocity.magnitude > walkingSpeed)
-				return;
+			if(rb.velocity.magnitude > walkingSpeed) return;
 
-			isWalking = true;
-			anim.SetTrigger("walk");
+			float spiderRadius = Vector2.Distance(centerPos, (Vector2) transform.position);
+			if(spiderRadius > penRadius)
+				killSpider();
+			else
+			{
+				isWalking = true;
+				anim.SetTrigger("walk");
+				anim.speed = 1 + walkingSpeed;
+			}
 		}
 
 		rb.AddRelativeForce(new Vector2(0f, walkingSpeed));
@@ -83,24 +116,12 @@ public class Spider : MonoBehaviour
 	// Walk into wall?
 	void OnCollisionStay2D(Collision2D c)
 	{
-		if(c.gameObject.layer == boundaryLayer)
-		{
-			rb.AddTorque(0.8f * Random.value > 0.5 ? 1 : -1);
-//			rb.AddRelativeForce(new Vector2(0f, WALK_FORCE * 100));
-		}
+		if(c.gameObject.layer == boundaryLayer) rb.AddTorque(0.8f * Random.value > 0.5 ? 1 : -1);
 	}
-
-// This gets out of control quickly
-//	void OnCollisionEnter2D(Collision2D c)
-//	{
-//		if(c.gameObject.layer == spiderLayer)
-//		{
-//			SoundManager.instance.Play("scritch");
-//		}
-//	}
 
 	public void fling(float force)
 	{
+		isHeld = false;
 		rb.AddRelativeForce(new Vector2(0f, force * FLING_MULTIPLIER), ForceMode2D.Impulse);
 	}
 }

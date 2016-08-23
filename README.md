@@ -19,8 +19,6 @@ Each living spider earns you points, so build up a big population and keep them 
 ## Remaining chores
 Ah well, I've done enough and I'm tired. Anyhow it's just a warmup weekend. :)
 
- - [ ] Eliminate flying spiders not in pen after 1 second
- - [ ] Easier flinging - add inner belt and project spider fling location
  - [ ] FX
  - [ ] In-game song
  - [ ] Better art
@@ -30,6 +28,8 @@ Ah well, I've done enough and I'm tired. Anyhow it's just a warmup weekend. :)
  - [ ] Prepopulate levels with spiders
  - [ ] Adjust speed of spiders to level/number of spiders out?
  - [ ] Fine tune sound effects
+ - [X] Eliminate flying spiders not in pen after 1 second
+ - [X] Easier flinging - add inner belt and project spider fling location
  - [X] Flying spider should keep flying while velocity high!
  - [X] Instructions
  - [X] Spider panic anim
