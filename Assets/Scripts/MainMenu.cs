@@ -37,6 +37,16 @@ public class MainMenu : MonoBehaviour
 		};
 	}
 
+	void Update()
+	{
+		if(Input.GetKeyDown(KeyCode.BackQuote))
+		{
+			Debug.Log("Deleting all prefs");
+			PlayerPrefs.DeleteAll();
+			updateScore();
+		}
+	}
+
 	void Start()
 	{
 		scoreText.text = "";

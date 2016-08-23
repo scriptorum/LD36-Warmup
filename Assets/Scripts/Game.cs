@@ -12,7 +12,7 @@ public class Game : MonoBehaviour
 	private static int SCORE_MULTIPLIER = 1;
 
 	public static int lastScore = 0;
-	public static int highScore = 0;
+	public static int highScore = PlayerPrefs.GetInt("highScore", 0);
 
 	public Text scoreText;
 	public Text gameOverText;
@@ -91,7 +91,10 @@ public class Game : MonoBehaviour
 
 		lastScore = score;
 		if(lastScore > highScore)
+		{
 			highScore = lastScore;
+			PlayerPrefs.SetInt("highScore", highScore);
+		}
 
 		aq.Delay(1f);
 		string msg = "GAME OVER";
