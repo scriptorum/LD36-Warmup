@@ -50,7 +50,7 @@ public class CheckInput : MonoBehaviour
 	private void startDragging()
 	{
 		isDragging = true;
-		Cursor.visible = false;
+//		Cursor.visible = false;
 	}
 
 	private void spawnSpider(Vector2 pt)
@@ -67,7 +67,7 @@ public class CheckInput : MonoBehaviour
 	private void stopDragging()
 	{
 		isDragging = false;
-		Cursor.visible = true;
+//		Cursor.visible = true;
 	}
 
 	private void unspawnSpider()

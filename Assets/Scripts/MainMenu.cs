@@ -57,7 +57,7 @@ public class MainMenu : MonoBehaviour
 
 		// Show long intro ONLY if this is the first scene loaded.
 		// Otherwise show the fast intro.
-		if(App.lastScene == null)
+		if(string.IsNullOrEmpty(App.instance.lastScene))
 		{
 			aq.Delay(0.5f);
 			float d = fadeTime;
