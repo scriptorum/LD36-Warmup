@@ -19,6 +19,7 @@ Each living spider earns you points, so build up a big population and keep them 
 ## Remaining chores
 Ah well, I've done enough and I'm tired. Anyhow it's just a warmup weekend. :)
 
+ - [ ] Don't allow flinging of spider at all if angle faces away
  - [ ] FX
  - [ ] In-game song
  - [ ] Better art
@@ -28,6 +29,7 @@ Ah well, I've done enough and I'm tired. Anyhow it's just a warmup weekend. :)
  - [ ] Prepopulate levels with spiders
  - [ ] Adjust speed of spiders to level/number of spiders out?
  - [ ] Fine tune sound effects
+ - [X] Fix fling exploits
  - [X] Eliminate flying spiders not in pen after 1 second
  - [X] Easier flinging - add inner belt and project spider fling location
  - [X] Flying spider should keep flying while velocity high!

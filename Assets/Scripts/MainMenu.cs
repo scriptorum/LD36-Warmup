@@ -35,6 +35,7 @@ public class MainMenu : MonoBehaviour
 			rulesButtonGO,
 			rulesTextGO
 		};
+		Game.loadPrefs();
 	}
 
 	void Update()
@@ -43,6 +44,7 @@ public class MainMenu : MonoBehaviour
 		{
 			Debug.Log("Deleting all prefs");
 			PlayerPrefs.DeleteAll();
+			Game.loadPrefs();
 			updateScore();
 		}
 	}

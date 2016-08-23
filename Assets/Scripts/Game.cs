@@ -12,7 +12,8 @@ public class Game : MonoBehaviour
 	private static int SCORE_MULTIPLIER = 1;
 
 	public static int lastScore = 0;
-	public static int highScore = PlayerPrefs.GetInt("highScore", 0);
+	public static int highScore = 0;
+	public static float minLineLength = 1.0f;
 
 	public Text scoreText;
 	public Text gameOverText;
@@ -28,6 +29,11 @@ public class Game : MonoBehaviour
 	private int liveSpiders = 0;
 	private float timeAccrued;
 	private ActionQueue aq;
+
+	public static void loadPrefs()
+	{
+		highScore = PlayerPrefs.GetInt("highScore", 0);
+	}
 
 	void Awake()
 	{

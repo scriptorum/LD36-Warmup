@@ -65,8 +65,7 @@ public class Spider : MonoBehaviour
 	{
 		if(isOutsidePen)
 		{
-			if(!isHeld && rb.velocity.magnitude <= 0.0001f)
-				killSpider();
+			if(!isHeld && rb.velocity.magnitude <= 0.0001f) killSpider();
 			return;
 		}
 
@@ -75,13 +74,13 @@ public class Spider : MonoBehaviour
 			if(rb.velocity.magnitude > walkingSpeed) return;
 
 			float spiderRadius = Vector2.Distance(centerPos, (Vector2) transform.position);
-			if(spiderRadius > penRadius)
-				killSpider();
+			if(spiderRadius > penRadius) killSpider();
 			else
 			{
 				isWalking = true;
 				anim.SetTrigger("walk");
 				anim.speed = 1 + walkingSpeed;
+				game.spiderBirthed();
 			}
 		}
 
@@ -95,7 +94,6 @@ public class Spider : MonoBehaviour
 		{
 			isOutsidePen = false;
 			gameObject.layer = spiderLayer;
-			game.spiderBirthed();
 		}
 	}
 
@@ -121,7 +119,11 @@ public class Spider : MonoBehaviour
 
 	public void fling(float force)
 	{
-		isHeld = false;
-		rb.AddRelativeForce(new Vector2(0f, force * FLING_MULTIPLIER), ForceMode2D.Impulse);
+		if(force < Game.minLineLength) killSpider();
+		else
+		{
+			isHeld = false;
+			rb.AddRelativeForce(new Vector2(0f, force * FLING_MULTIPLIER), ForceMode2D.Impulse);
+		}
 	}
 }

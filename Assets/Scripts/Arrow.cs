@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
-	public float dotLength = 0.5f;
+	public static float BIG_DOT_LENGTH = 0.20f;
+	public static float SMALL_DOT_LENGTH = 0.14f;
 	public GameObject spiderPrefab;
 	public GameObject dotPrefab;
+	public Sprite arrow;
+	public Sprite arrowSmall;
 
 	public float lineLength;
 	private SpriteRenderer sr;
@@ -60,7 +63,8 @@ public class Arrow : MonoBehaviour
 		// Determine optimal number of smaller dots
 		Vector2 vec = ((Vector2) heldSpider.transform.position) - pt;
 		lineLength = vec.magnitude;
-		int numDots = Mathf.Max(0, (int) Mathf.Floor(lineLength / dotLength) - 1);
+		float dotSize = (lineLength < Game.minLineLength ? SMALL_DOT_LENGTH : BIG_DOT_LENGTH);
+		int numDots = Mathf.Max(0, (int) Mathf.Floor(lineLength / dotSize) - 1);
 		Vector2 dotOffset = vec / numDots;
 
 		// Ensure correct number of dots exist
@@ -84,6 +88,7 @@ public class Arrow : MonoBehaviour
 			if(!dots[d].activeSelf)
 				dots[d].SetActive(true);
 			dots[d].transform.position = new Vector3(pt.x + dotOffset.x * d, pt.y + dotOffset.y * d, dotPrefab.transform.position.z);
+			dots[d].GetComponent<SpriteRenderer>().sprite = (lineLength < Game.minLineLength ? arrowSmall : arrow);
 		}
 	}
 
